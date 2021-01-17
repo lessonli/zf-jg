@@ -97,7 +97,7 @@ class Promise {
 	}
 	then(onFULFILLED, onREJECTED) {
 		// then 的 穿透处理
-		//  可选参数 没传 就给 默认 规范
+		//  可选参数 没传 就给 默认 规范 
 		onFULFILLED = typeof onFULFILLED === "function" ? onFULFILLED : val => val
 		onREJECTED = typeof onFULFILLED === "function" ? onFULFILLED : err => {throw err}
 		//  then 方法 调用后 应该 返回一个 新的 promise
