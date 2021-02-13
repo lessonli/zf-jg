@@ -1,0 +1,8 @@
+{
+    "plugins": [
+      "@babel/plugin-transform-arrow-functions",  // 这个是箭头函数的处理
+      ["@babel/plugin-proposal-decorators", { "legacy": true }], //解析装饰器
+      ["@babel/plugin-proposal-class-properties", { "loose" : true }], // 对类的编译 true 使用 Object.defineProperty false 则是使用 复制语句
+      "@babel/plugin-syntax-dynamic-import"
+    ]
+  }

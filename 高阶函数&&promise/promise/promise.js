@@ -30,7 +30,7 @@ const resolvePromiise = (promise2, x, resolve, reject) => {
 					y => {
 						if (called) return
 						called = true 
-						resolvePromiise(promise2, y, resolve, reject)
+						resolvePromiise(promise2, y, resolve, reject) // 此处的y 也有可能是个promise
 					}, // 成功
 					r => {
 						if (called) return  // 防止多次调用
@@ -39,6 +39,7 @@ const resolvePromiise = (promise2, x, resolve, reject) => {
 					} // 失败
 				)
 			} else {
+			
 				resolve(x)
 			}
 		} catch (error) {
@@ -65,6 +66,11 @@ class Promise {
 		this.onRejectCallbacks = []
 
 		let resolve = value => {
+			// 如果 value 是个promsie
+			//  如果一个 promise resolve ；了 一个promsie 会等待这个内部的promsie的完成
+			if (value instanceof Promise) {
+				return value.then(resolve, reject) // 此处 仅仅 考虑了我自己的 promise
+			}
 			//  只有当 状态 pending 的时候 才可以 修改状态
 			if (this.status === PENDING) {
 				this.value = value
@@ -158,6 +164,12 @@ class Promise {
 		})
 		return promise2
 	}
+	// 因为catch 并不会阻塞代码 并且其返回值 会作为下一个then 的参数 传入， 因此说 catch就是一个没有成功回调的 then
+	catch(errCallback) {
+		return this.then(null, errCallback) 
+	}
 }
 
 module.exports = Promise
+
+//  可以全局安装 promises-aplus-test  进行测试
